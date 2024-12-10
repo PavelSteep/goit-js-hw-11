@@ -1,8 +1,69 @@
-// Import all of Bootstrap's CSS
+@import 'loader';
 @import "~bootstrap/scss/bootstrap";
 
-// import * as bootstrap from 'bootstrap';
 body {
-  background-color: pink !important;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+
+
+
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gallery-item {
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-item img:hover {
+  transform: scale(1.1);
+}
+
+.loader {
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+}
