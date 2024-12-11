@@ -3,8 +3,9 @@ import { renderImages } from './js/render-functions';
 import iziToast from 'izitoast';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import 'bootstrap';
 import 'izitoast/dist/css/iziToast.min.css';
+import 'bootstrap';
+
 
 const searchForm = document.querySelector('#search-form');
 const searchInput = document.querySelector('.search-input');
@@ -13,7 +14,7 @@ const gallery = document.querySelector('.gallery');
 // Проверяем, существует ли форма перед добавлением обработчика события
 if (searchForm) {
   searchForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращаем стандартное поведение формы
+    event.preventDefault(); // Предотвращает обновление страницы при отправке формы.
 
     const query = searchInput.value.trim(); // Получаем строку запроса
 
