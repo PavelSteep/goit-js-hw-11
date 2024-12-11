@@ -47,7 +47,16 @@ export default defineConfig(({ command }) => {
       }),
     ],
     server: {
-    port: 5173,
-  }
+      port: 5173,
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Пример дополнительных настроек для SCSS
+          additionalData: `@import "./src/scss/loader.scss";`, // Если хотите глобально подключать переменные или миксины
+          includePaths: ['./src/scss/styles'], // Чтобы не использовать относительные пути при импорте
+        },
+      },
+    },
   };
 });
