@@ -23,7 +23,6 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
-    "crypto-js": "^4.2.0",
     "css-loader": "^7.1.2",
     "izitoast": "^1.4.0",
     "simplelightbox": "^2.14.3",

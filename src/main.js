@@ -6,79 +6,90 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import 'izitoast/dist/css/iziToast.min.css';
 import 'bootstrap';
 
-
 const searchForm = document.querySelector('#search-form');
 const searchInput = document.querySelector('.search-input');
 const gallery = document.querySelector('.gallery');
+const loadMoreBtn = document.querySelector('.load-more');
 
-// Проверяем, существует ли форма перед добавлением обработчика события
 if (searchForm) {
   searchForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Предотвращает обновление страницы при отправке формы.
+    event.preventDefault();
 
-    const query = searchInput.value.trim(); // Получаем строку запроса
+    const query = searchInput.value.trim();
 
     if (!query) {
       iziToast.error({ message: 'Please enter a search term' });
       return;
     }
 
-    // Создаем и показываем индикатор загрузки
-    const loader = document.createElement('div');
-    loader.classList.add('loader');
-    loader.textContent = 'Loading...';
-    gallery.innerHTML = ''; // Очищаем галерею перед загрузкой
-    gallery.appendChild(loader);
+    showLoader();
+    clearGallery();
 
     try {
-      const images = await fetchImages(query); // Запрашиваем изображения по введенному запросу
+      const images = await fetchImages(query);
 
       if (images.length === 0) {
         iziToast.info({ message: 'Sorry, there are no images matching your search query. Please try again!' });
       } else {
-        renderImages(images); // Отображаем изображения
-        new SimpleLightbox('.gallery a'); // Инициализация SimpleLightbox для галереи
+        renderImages(images);
+        initializeLightbox();
       }
     } catch (error) {
       iziToast.error({ message: 'Something went wrong, please try again!' });
     } finally {
-      // Убираем индикатор загрузки
-      if (loader) loader.remove();
+      hideLoader();
     }
   });
 } else {
-  console.log('Элемент с id "search-form" не найден');
+  console.error('Search form element not found');
 }
 
-// Обработчик события на нажатие кнопки "Load more"
-document.querySelector('.load-more').addEventListener('click', async () => {
-  const query = searchInput.value.trim(); // Получаем строку запроса
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener('click', async () => {
+    const query = searchInput.value.trim();
 
-  if (!query) {
-    iziToast.error({ message: 'Please enter a search term' });
-    return;
-  }
+    if (!query) {
+      iziToast.error({ message: 'Please enter a search term' });
+      return;
+    }
 
-  // Создаем и показываем индикатор загрузки
+    showLoader();
+
+    try {
+      const images = await fetchImages(query);
+
+      if (images.length === 0) {
+        iziToast.info({ message: 'Sorry, there are no more images to load.' });
+      } else {
+        renderImages(images);
+        initializeLightbox();
+      }
+    } catch (error) {
+      iziToast.error({ message: 'Something went wrong, please try again!' });
+    } finally {
+      hideLoader();
+    }
+  });
+} else {
+  console.error('Load more button element not found');
+}
+
+function showLoader() {
   const loader = document.createElement('div');
   loader.classList.add('loader');
   loader.textContent = 'Loading...';
   gallery.appendChild(loader);
+}
 
-  try {
-    const images = await fetchImages(query); // Запрашиваем изображения по введенному запросу
+function hideLoader() {
+  const loader = document.querySelector('.loader');
+  if (loader) loader.remove();
+}
 
-    if (images.length === 0) {
-      iziToast.info({ message: 'Sorry, there are no images matching your search query. Please try again!' });
-    } else {
-      renderImages(images); // Отображаем изображения
-      new SimpleLightbox('.gallery a'); // Инициализация SimpleLightbox для галереи
-    }
-  } catch (error) {
-    iziToast.error({ message: 'Something went wrong, please try again!' });
-  } finally {
-    // Убираем индикатор загрузки
-    const loader = document.querySelector('.loader');
-    if (loader) loader.remove();
-  }
-});
+function clearGallery() {
+  gallery.innerHTML = '';
+}
+
+function initializeLightbox() {
+  new SimpleLightbox('.gallery a');
+}
